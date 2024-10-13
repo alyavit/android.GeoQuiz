@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,8 +17,21 @@ class MainActivity : AppCompatActivity() {
         val btnNo = findViewById<Button>(R.id.btnNo)
 
         var correctAnswers: Int = 0
-        val questionFirst: String = "Лондон - столица Великобритании"
-        val questionSecond: String = "Африка - это название страны"
             //TODO: дочитать главы книги. дописать логику и работу приложения
+    }
+
+    fun correctToast() {
+        Toast.makeText(
+            this,
+            "Верно!",
+            Toast.LENGTH_SHORT)
+            .show()
+    }
+    fun incorrectToast() {
+        Toast.makeText(
+            this,
+            "Не верно!",
+            Toast.LENGTH_SHORT)
+            .show()
     }
 }

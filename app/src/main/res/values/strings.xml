@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GeoQuiz</string>
+    <string name="first_question">Лондон - столица Великобритании</string>
+    <string name="second_question">Африка - это название страны</string>
+    <string name="third_question">Монголия граничит с Италией</string>
+    <string name="fourth_question">Площадь Испании больше площади Египта</string>
+    <string name="fivth_question">Новая Зеландия - это название страны</string>
 </resources>
