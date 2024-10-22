@@ -9,18 +9,30 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
 
     private val questionBank = listOf(
-        Question(R.string.question_first, true),
-        Question(R.string.question_second,
-            true),
-        Question(R.string.question_third,
-            false),
-        Question(R.string.question_fourth,
-            false),
-        Question(R.string.question_fivth
-            , true),
-        Question(R.string.question_second,
-            true))
+        Question(R.string.question_first,true),
+        Question(R.string.question_second,false),
+        Question(R.string.question_third,false),
+        Question(R.string.question_fourth,false),
+        Question(R.string.question_fivth,true),
+        Question(R.string.question_sixth,true))
     private var currentIndex = 0
+    private var correctAnswers: Int = 0
+
+
+    private fun checkAnswer(userAnswer:Boolean) {
+        val correctAnswer = questionBank[currentIndex].answer
+        if(userAnswer==correctAnswer) {
+            Toast.makeText(this, "OK",
+                Toast.LENGTH_SHORT)
+                .show()
+            correctAnswers++
+        } else {
+            Toast.makeText(this, "NET",
+                Toast.LENGTH_SHORT)
+                .show()
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +42,6 @@ class MainActivity : AppCompatActivity() {
         val btnNext = findViewById<Button>(R.id.btnNext)
         val btnYes = findViewById<Button>(R.id.btnYes)
         val btnNo = findViewById<Button>(R.id.btnNo)
-        var correctAnswers: Int = 0
-            //TODO: дочитать главы книги. дописать логику и работу приложения
         val questionTextResId = questionBank[currentIndex].textResId
         textQ.setText(questionTextResId)
 
@@ -41,20 +51,14 @@ class MainActivity : AppCompatActivity() {
             val questionTextResId = questionBank[currentIndex].textResId
             textQ.setText(questionTextResId)
         }
-    }
 
-    fun correctToast() {
-        Toast.makeText(
-            this,
-            "Верно!",
-            Toast.LENGTH_SHORT)
-            .show()
-    }
-    fun incorrectToast() {
-        Toast.makeText(
-            this,
-            "Не верно!",
-            Toast.LENGTH_SHORT)
-            .show()
+        btnNo.setOnClickListener {
+            checkAnswer(false)
+        }
+
+        btnYes.setOnClickListener {
+            checkAnswer(true)
+        }
+
     }
 }
