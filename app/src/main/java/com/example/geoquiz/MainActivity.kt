@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,25 +48,34 @@ class MainActivity : AppCompatActivity() {
         val textCorrectNum = findViewById<TextView>(R.id.textCorrectNumber)
 
         btnNext.setOnClickListener {
-            currentIndex = (currentIndex + 1) %
-                    questionBank.size
+            currentIndex = (currentIndex + 1)
             val questionTextResId = questionBank[currentIndex].textResId
             textQ.setText(questionTextResId)
-            btnYes.isClickable = true
-            btnNo.isClickable = true
+            btnYes.isVisible = true
+            btnNo.isVisible = true
+            btnNext.isVisible = false
+            if (currentIndex >= questionBank.size-1){
+                Toast.makeText(this, "Molodecs, ты угадал верно: $correctAnswers",
+                    Toast.LENGTH_SHORT)
+                    .show()
+                btnYes.isVisible = false
+                btnNo.isVisible = false
+            }
         }
 
         btnNo.setOnClickListener {
             checkAnswer(false)
-            btnYes.isClickable = false
-            btnNo.isClickable = false
+            btnYes.isVisible = false
+            btnNo.isVisible = false
+            btnNext.isVisible = true
             textCorrectNum.setText(correctAnswers.toString())
         }
 
         btnYes.setOnClickListener {
             checkAnswer(true)
-            btnYes.isClickable = false
-            btnNo.isClickable = false
+            btnYes.isVisible = false
+            btnNo.isVisible = false
+            btnNext.isVisible = true
             textCorrectNum.setText(correctAnswers.toString())
         }
 
