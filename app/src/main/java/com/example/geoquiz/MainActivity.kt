@@ -44,20 +44,29 @@ class MainActivity : AppCompatActivity() {
         val btnNo = findViewById<Button>(R.id.btnNo)
         val questionTextResId = questionBank[currentIndex].textResId
         textQ.setText(questionTextResId)
+        val textCorrectNum = findViewById<TextView>(R.id.textCorrectNumber)
 
         btnNext.setOnClickListener {
             currentIndex = (currentIndex + 1) %
                     questionBank.size
             val questionTextResId = questionBank[currentIndex].textResId
             textQ.setText(questionTextResId)
+            btnYes.isClickable = true
+            btnNo.isClickable = true
         }
 
         btnNo.setOnClickListener {
             checkAnswer(false)
+            btnYes.isClickable = false
+            btnNo.isClickable = false
+            textCorrectNum.setText(correctAnswers.toString())
         }
 
         btnYes.setOnClickListener {
             checkAnswer(true)
+            btnYes.isClickable = false
+            btnNo.isClickable = false
+            textCorrectNum.setText(correctAnswers.toString())
         }
 
     }
