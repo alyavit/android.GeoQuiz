@@ -42,6 +42,11 @@ class MainActivity : AppCompatActivity() {
         val questionTextResId = quizViewModel.currentQuestionText
         textQ.setText(questionTextResId)
         val textCorrectNum = findViewById<TextView>(R.id.textCorrectNumber)
+        textCorrectNum.setText(quizViewModel.correctAnswers.toString())
+
+        btnYes.isVisible = quizViewModel.checkVisYes
+        btnNo.isVisible = quizViewModel.checkVisNo
+        btnNext.isVisible = quizViewModel.checkVisNext
 
         btnNext.setOnClickListener {
             quizViewModel.moveToNext()
@@ -57,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             btnNext.isVisible = quizViewModel.checkVisNext
 
             if (quizViewModel.currentIndex >= quizViewModel.questionBank.size-1){
-                Toast.makeText(this, "Molodecs, ты угадал верно: $quizViewModel.correctAnswers",
+                Toast.makeText(this, "Molodecs, ты угадал верно: ${quizViewModel.correctAnswers}",
                     Toast.LENGTH_SHORT)
                     .show()
                 btnYes.isVisible = false
@@ -67,17 +72,23 @@ class MainActivity : AppCompatActivity() {
 
         btnNo.setOnClickListener {
             checkAnswer(false)
-            btnYes.isVisible = false
-            btnNo.isVisible = false
-            btnNext.isVisible = true
+            quizViewModel.checkVisYes  = false
+            quizViewModel.checkVisNo = false
+            quizViewModel.checkVisNext = true
+            btnYes.isVisible = quizViewModel.checkVisYes
+            btnNo.isVisible = quizViewModel.checkVisNo
+            btnNext.isVisible = quizViewModel.checkVisNext
             textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
 
         btnYes.setOnClickListener {
             checkAnswer(true)
-            btnYes.isVisible = false
-            btnNo.isVisible = false
-            btnNext.isVisible = true
+            quizViewModel.checkVisYes = false
+            quizViewModel.checkVisNo = false
+            quizViewModel.checkVisNext = true
+            btnYes.isVisible = quizViewModel.checkVisYes
+            btnNo.isVisible = quizViewModel.checkVisNo
+            btnNext.isVisible = quizViewModel.checkVisNext
             textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
 
