@@ -6,27 +6,20 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 
 class MainActivity : AppCompatActivity() {
-
-    private val questionBank = listOf(
-        Question(R.string.question_first,true),
-        Question(R.string.question_second,false),
-        Question(R.string.question_third,false),
-        Question(R.string.question_fourth,false),
-        Question(R.string.question_fivth,true),
-        Question(R.string.question_sixth,true))
-    private var currentIndex = 0
-    private var correctAnswers: Int = 0
-
-
+    private val quizViewModel: QuizViewModel by lazy {
+        ViewModelProviders.of(this)[QuizViewModel::class.java]
+    }
     private fun checkAnswer(userAnswer:Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
         if(userAnswer==correctAnswer) {
             Toast.makeText(this, "OK",
                 Toast.LENGTH_SHORT)
                 .show()
-            correctAnswers++
+            quizViewModel.correctAnswers++
         } else {
             Toast.makeText(this, "NET",
                 Toast.LENGTH_SHORT)
@@ -39,23 +32,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val provider: ViewModelProvider = ViewModelProviders.of(this)
+        val quizViewModel = provider[QuizViewModel::class.java]
+
         val textQ = findViewById<TextView>(R.id.textQuest)
         val btnNext = findViewById<Button>(R.id.btnNext)
         val btnYes = findViewById<Button>(R.id.btnYes)
         val btnNo = findViewById<Button>(R.id.btnNo)
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         textQ.setText(questionTextResId)
         val textCorrectNum = findViewById<TextView>(R.id.textCorrectNumber)
 
         btnNext.setOnClickListener {
-            currentIndex = (currentIndex + 1)
-            val questionTextResId = questionBank[currentIndex].textResId
+            quizViewModel.moveToNext()
+            val questionTextResId = quizViewModel.currentQuestionText
             textQ.setText(questionTextResId)
-            btnYes.isVisible = true
-            btnNo.isVisible = true
-            btnNext.isVisible = false
-            if (currentIndex >= questionBank.size-1){
-                Toast.makeText(this, "Molodecs, ты угадал верно: $correctAnswers",
+
+            //Выставление видмости кнопок с соханением состояний
+            quizViewModel.checkVisYes = true
+            btnYes.isVisible = quizViewModel.checkVisYes
+            quizViewModel.checkVisNo = true
+            btnNo.isVisible = quizViewModel.checkVisNo
+            quizViewModel.checkVisNext = false
+            btnNext.isVisible = quizViewModel.checkVisNext
+
+            if (quizViewModel.currentIndex >= quizViewModel.questionBank.size-1){
+                Toast.makeText(this, "Molodecs, ты угадал верно: $quizViewModel.correctAnswers",
                     Toast.LENGTH_SHORT)
                     .show()
                 btnYes.isVisible = false
@@ -68,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             btnYes.isVisible = false
             btnNo.isVisible = false
             btnNext.isVisible = true
-            textCorrectNum.setText(correctAnswers.toString())
+            textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
 
         btnYes.setOnClickListener {
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             btnYes.isVisible = false
             btnNo.isVisible = false
             btnNext.isVisible = true
-            textCorrectNum.setText(correctAnswers.toString())
+            textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
 
     }
