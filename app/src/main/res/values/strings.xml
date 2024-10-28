@@ -1,9 +1,15 @@
 <resources>
     <string name="app_name">GeoQuiz</string>
+
     <string name="question_first">Лондон - столица Великобритании</string>
     <string name="question_second">Африка - это название страны</string>
     <string name="question_third">Монголия граничит с Италией</string>
     <string name="question_fourth">Площадь Испании больше площади Египта</string>
     <string name="question_fivth">Новая Зеландия - это название страны</string>
     <string name="question_sixth">Это конец"</string>
+
+    <string name="warning_text">Точно уверены?</string>
+    <string name="show_answer_button">Показать правильный ответ</string>
+    <string name="cheat_button">Cheat!</string>
+    <string name="judgment_toast">Cheating is wrong :P</string>
 </resources>
