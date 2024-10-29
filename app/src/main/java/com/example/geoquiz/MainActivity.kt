@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -96,9 +97,9 @@ class MainActivity : AppCompatActivity() {
             textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
 
-        btnNo.setOnClickListener {}
-
-        //TODO: Добавить кнопку "ЧИТ!" желательно ImageButton с подхожящей иконкой. остановился на странице 200.
-
+        btnCht.setOnClickListener {
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
