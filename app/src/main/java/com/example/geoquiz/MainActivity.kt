@@ -3,6 +3,7 @@ package com.example.geoquiz
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -16,15 +17,15 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswer(userAnswer:Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
         if(userAnswer==correctAnswer) {
-            Toast.makeText(this, "OK",
+            /*Toast.makeText(this, "OK",
                 Toast.LENGTH_SHORT)
-                .show()
+                .show()*/
             quizViewModel.correctAnswers++
-        } else {
+        } /*else {
             Toast.makeText(this, "NET",
                 Toast.LENGTH_SHORT)
                 .show()
-        }
+        }*/
 
     }
 
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         val btnNext = findViewById<Button>(R.id.btnNext)
         val btnYes = findViewById<Button>(R.id.btnYes)
         val btnNo = findViewById<Button>(R.id.btnNo)
+        val btnCht = findViewById<ImageButton>(R.id.btnImgCheat)
         val questionTextResId = quizViewModel.currentQuestionText
         textQ.setText(questionTextResId)
         val textCorrectNum = findViewById<TextView>(R.id.textCorrectNumber)
@@ -62,11 +64,13 @@ class MainActivity : AppCompatActivity() {
             btnNext.isVisible = quizViewModel.checkVisNext
 
             if (quizViewModel.currentIndex >= quizViewModel.questionBank.size-1){
-                Toast.makeText(this, "Molodecs, ты угадал верно: ${quizViewModel.correctAnswers}",
+                Toast.makeText(this, "Угадал верно: ${quizViewModel.correctAnswers}",
                     Toast.LENGTH_SHORT)
                     .show()
-                btnYes.isVisible = false
-                btnNo.isVisible = false
+                quizViewModel.checkVisYes = false
+                btnYes.isVisible = quizViewModel.checkVisYes
+                quizViewModel.checkVisNo = false
+                btnNo.isVisible = quizViewModel.checkVisNo
             }
         }
 
@@ -91,6 +95,10 @@ class MainActivity : AppCompatActivity() {
             btnNext.isVisible = quizViewModel.checkVisNext
             textCorrectNum.setText(quizViewModel.correctAnswers.toString())
         }
+
+        btnNo.setOnClickListener {}
+
+        //TODO: Добавить кнопку "ЧИТ!" желательно ImageButton с подхожящей иконкой. остановился на странице 200.
 
     }
 }
