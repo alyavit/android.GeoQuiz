@@ -3,6 +3,7 @@ package com.example.geoquiz
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
@@ -36,8 +37,8 @@ import androidx.core.view.WindowInsetsCompat
 
         showAnswerButton.setOnClickListener{
             val answerText = when {
-                answerIsTrue -> "Ответ ДА"
-                else -> "Ответ НЕТ"
+                answerIsTrue -> "Ответ ДА\nAPI Level: ${Build.VERSION.SDK_INT}"
+                else -> "Ответ НЕТ\nAPI Level:  ${Build.VERSION.SDK_INT}"
             }
             answerTextView.setText(answerText)
             setAnswerShownresult(true)
