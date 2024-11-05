@@ -20,6 +20,8 @@ class QuizViewModel : ViewModel() {
     var checkVisYes = true
     var checkVisNo = true
     var checkVisNext = true
+    var isCheater = false
+    var timesCheats = 0
 
     fun moveToNext() {
         currentIndex = (currentIndex + 1) % questionBank.size

@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +12,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
+private const val REQUEST_CODE_CHEAT = 0
+
 class MainActivity : AppCompatActivity() {
+
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProviders.of(this)[QuizViewModel::class.java]
     }
@@ -27,6 +31,13 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT)
                 .show()
         }*/
+        val messageResId = when{
+            quizViewModel.isCheater -> getString(R.string.judgment_toast)
+            userAnswer == correctAnswer -> "Good"
+            else -> "Not good"
+        }
+
+        Toast.makeText(this, messageResId,Toast.LENGTH_SHORT).show()
 
     }
 
@@ -65,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             btnNext.isVisible = quizViewModel.checkVisNext
 
             if (quizViewModel.currentIndex >= quizViewModel.questionBank.size-1){
-                Toast.makeText(this, "Угадал верно: ${quizViewModel.correctAnswers}",
+                Toast.makeText(this, "Угадал верно: ${quizViewModel.correctAnswers}\nСчитерил: ${quizViewModel.timesCheats}",
                     Toast.LENGTH_SHORT)
                     .show()
                 quizViewModel.checkVisYes = false
@@ -98,9 +109,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnCht.setOnClickListener {
-            val answerIsTrue = quizViewModel.currentQuestionAnswer
-            val intent = CheatActivity.newIntent(this@MainActivity,answerIsTrue)
-            startActivity(intent)
+            if (quizViewModel.timesCheats == 3) {
+                Toast.makeText(this, "Достаточно жульничества!", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val answerIsTrue = quizViewModel.currentQuestionAnswer
+                val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+                startActivityForResult(intent, REQUEST_CODE_CHEAT)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK){
+            return
+        }
+        if (requestCode == REQUEST_CODE_CHEAT){
+                quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_IS_SHOWN,false) ?: false
+            quizViewModel.timesCheats++
         }
     }
 }
+
